@@ -1,0 +1,586 @@
+<mujoco model="Skydio X2">
+<compiler autolimits="true" assetdir="assets" angle="radian"/>
+<option timestep="0.001" solver="Newton" iterations="1000" tolerance="1e-18" gravity="0 0 -9.81" integrator="implicitfast" density="1.225" viscosity="1.8e-5"/>
+  <size nconmax="1000000"/>
+<default>
+<default class="x2">
+<geom mass="0"/>
+<motor ctrlrange="0 13"/>
+<default class="visual">
+<geom group="2" type="mesh" contype="0" conaffinity="0"/>
+</default>
+<default class="collision">
+<geom group="3" type="box"/>
+<default class="rotor">
+<geom type="ellipsoid" size=".13 .13 .01"/>
+</default>
+</default>
+<site group="5"/>
+</default>
+</default>
+<asset>
+<mesh file="X2_lowpoly.obj" scale="0.01 0.01 0.01"/>
+ <mesh name="baselink_1" file="baselink.stl" scale="0.001000000 0.001000000 0.001000000"/>
+    <mesh name="baselink_2" file="baselink.stl" scale="0.000914835 0.000914835 0.000914835"/>
+    <mesh name="baselink_3" file="baselink.stl" scale="0.000836923 0.000836923 0.000836923"/>
+    <mesh name="baselink_4" file="baselink.stl" scale="0.000765646 0.000765646 0.000765646"/>
+    <mesh name="baselink_5" file="baselink.stl" scale="0.000700440 0.000700440 0.000700440"/>
+    <mesh name="baselink_6" file="baselink.stl" scale="0.000640786 0.000640786 0.000640786"/>
+    <mesh name="baselink_7" file="baselink.stl" scale="0.000586214 0.000586214 0.000586214"/>
+    <mesh name="baselink_8" file="baselink.stl" scale="0.000536289 0.000536289 0.000536289"/>
+    <mesh name="baselink_9" file="baselink.stl" scale="0.000490616 0.000490616 0.000490616"/>
+    <mesh name="baselink_10" file="baselink.stl" scale="0.000448832 0.000448832 0.000448832"/>
+    <mesh name="baselink_11" file="baselink.stl" scale="0.000410607 0.000410607 0.000410607"/>
+    <mesh name="baselink_12" file="baselink.stl" scale="0.000375638 0.000375638 0.000375638"/>
+    <mesh name="baselink_13" file="baselink.stl" scale="0.000343647 0.000343647 0.000343647"/>
+    <mesh name="baselink_14" file="baselink.stl" scale="0.000314380 0.000314380 0.000314380"/>
+    <mesh name="baselink_15" file="baselink.stl" scale="0.000287606 0.000287606 0.000287606"/>
+    <mesh name="baselink_16" file="baselink.stl" scale="0.000263112 0.000263112 0.000263112"/>
+    <mesh name="baselink_17" file="baselink.stl" scale="0.000240704 0.000240704 0.000240704"/>
+    <mesh name="baselink_18" file="baselink.stl" scale="0.000220204 0.000220204 0.000220204"/>
+    <mesh name="baselink_19" file="baselink.stl" scale="0.000201450 0.000201450 0.000201450"/>
+    <mesh name="baselink_20" file="baselink.stl" scale="0.000184294 0.000184294 0.000184294"/>
+    <mesh name="baselink_21" file="baselink.stl" scale="0.000168598 0.000168598 0.000168598"/>
+    <mesh name="baselink_22" file="baselink.stl" scale="0.000154240 0.000154240 0.000154240"/>
+    <mesh name="baselink_23" file="baselink.stl" scale="0.000141104 0.000141104 0.000141104"/>
+    <mesh name="baselink_24" file="baselink.stl" scale="0.000129087 0.000129087 0.000129087"/>
+
+
+
+    <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512" mark="cross" markrgb=".8 .8 .8"/>
+    <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+<texture type="2d" file="X2_lowpoly_texture_SpinningProps_1024.png"/>
+<material name="phong3SG" texture="X2_lowpoly_texture_SpinningProps_1024"/>
+<material name="invisible" rgba="0 0 0 0"/>
+</asset>
+<worldbody>
+
+
+<geom name="ground" type="plane" size="100 100 1" pos="0 0 0" quat="1 0 0 0" material="matplane" condim="1"/>
+<light name="spotlight" mode="targetbodycom" target="x2" pos="0 -1 2"/>
+<body name="x2" pos="0 0 0.1" childclass="x2">
+<body name="link1" pos="0 0 -0.05" euler="3.14159265359 0 1.57079632679">
+      <geom type="mesh" mesh="baselink_1" mass="0.0500"/>
+      <site name="s1_1" pos="0.000000000 0.064184961 0.029148720" size="0.01000 0.01000 0.001000"/>
+      <site name="s1_2" pos="0.000000000 0.060750162 0.077236146" size="0.001000 0.001000 0.001000"/>
+      <site name="s1_3" pos="0.000000000 -0.064184961 0.029148720" size="0.001000 0.001000 0.001000"/>
+      <site name="s1_4" pos="0.000000000 -0.060750162 0.077236146" size="0.001000 0.001000 0.001000"/>
+   <geom name="marker_1"
+      type="cylinder"
+      pos="0 0 0.048"
+      euler="0 1.57079632679 0"
+      size="0.003 0.04"
+      rgba="0 1 0 1"
+      contype="0" conaffinity="0"/>
+      <body name="link2" pos="0 0 0.083166502" >
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.500000" damping="0.300000"/>
+        <geom type="mesh" mesh="baselink_2" mass="0.0483"/>
+        <site name="s2_1" pos="0.000000000 0.058718635 0.026666263" size="0.000915 0.000915 0.000915"/>
+        <site name="s2_2" pos="0.000000000 0.055576362 0.070658313" size="0.000915 0.000915 0.000915"/>
+        <site name="s2_3" pos="0.000000000 -0.058718635 0.026666263" size="0.000915 0.000915 0.000915"/>
+        <site name="s2_4" pos="0.000000000 -0.055576362 0.070658313" size="0.000915 0.000915 0.000915"/>
+        <geom name="marker_2" 
+          type="cylinder"
+          pos="0 0 0.045"
+          euler="0 1.57079632679 0"
+          size="0.0028 0.038"
+          rgba="0 1 0 1"/>
+      <body name="link3" pos="0 0 0.076083609">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.418461" damping="0.274450"/>
+        <geom type="mesh" mesh="baselink_3" mass="0.0465"/>
+        <site name="s3_1" pos="0.000000000 0.053717850 0.024395225" size="0.000837 0.000837 0.000837"/>
+        <site name="s3_2" pos="0.000000000 0.050843189 0.064640683" size="0.000837 0.000837 0.000837"/>
+        <site name="s3_3" pos="0.000000000 -0.053717850 0.024395225" size="0.000837 0.000837 0.000837"/>
+        <site name="s3_4" pos="0.000000000 -0.050843189 0.064640683" size="0.000837 0.000837 0.000837"/>
+        <geom name="marker_3"
+      type="cylinder"
+      pos="0 0 0.041"
+      euler="0 1.57079632679 0"
+      size="0.0026 0.036"
+      rgba="0 1 0 1"/>
+
+      <body name="link4" pos="0 0 0.069603932">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.350220" damping="0.251077"/>
+        <geom type="mesh" mesh="baselink_4" mass="0.0448"/>
+        <site name="s4_1" pos="0.000000000 0.049142958 0.022317600" size="0.000766 0.000766 0.000766"/>
+        <site name="s4_2" pos="0.000000000 0.046513118 0.059135545" size="0.000766 0.000766 0.000766"/>
+        <site name="s4_3" pos="0.000000000 -0.049142958 0.022317600" size="0.000766 0.000766 0.000766"/>
+        <site name="s4_4" pos="0.000000000 -0.046513118 0.059135545" size="0.000766 0.000766 0.000766"/>
+        <geom name="marker_4"
+      type="cylinder"
+      pos="0 0 0.038"
+      euler="0 1.57079632679 0"
+      size="0.0024 0.034"
+      rgba="0 1 0 1"/>
+
+      <body name="link5" pos="0 0 0.063676098">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.293107" damping="0.229694"/>
+        <geom type="mesh" mesh="baselink_5" mass="0.0430"/>
+        <site name="s5_1" pos="0.000000000 0.044957687 0.020416917" size="0.000700 0.000700 0.000700"/>
+        <site name="s5_2" pos="0.000000000 0.042551818 0.054099254" size="0.000700 0.000700 0.000700"/>
+        <site name="s5_3" pos="0.000000000 -0.044957687 0.020416917" size="0.000700 0.000700 0.000700"/>
+        <site name="s5_4" pos="0.000000000 -0.042551818 0.054099254" size="0.000700 0.000700 0.000700"/>
+        <geom name="marker_5"
+      type="cylinder"
+      pos="0 0 0.035"
+      euler="0 1.57079632679 0"
+      size="0.0022 0.032"
+      rgba="0 1 0 1"/>
+
+      <body name="link6" pos="0 0 0.058253110">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.245308" damping="0.210132"/>
+        <geom type="mesh" mesh="baselink_6" mass="0.0413"/>
+        <site name="s6_1" pos="0.000000000 0.041128856 0.018678106" size="0.000641 0.000641 0.000641"/>
+        <site name="s6_2" pos="0.000000000 0.038927883 0.049491879" size="0.000641 0.000641 0.000641"/>
+        <site name="s6_3" pos="0.000000000 -0.041128856 0.018678106" size="0.000641 0.000641 0.000641"/>
+        <site name="s6_4" pos="0.000000000 -0.038927883 0.049491879" size="0.000641 0.000641 0.000641"/>
+        <geom name="marker_6"
+      type="cylinder"
+      pos="0 0 0.032"
+      euler="0 1.57079632679 0"
+      size="0.0020 0.030"
+      rgba="0 1 0 1"/>
+
+      <body name="link7" pos="0 0 0.053291971">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.205304" damping="0.192236"/>
+        <geom type="mesh" mesh="baselink_7" mass="0.0395"/>
+        <site name="s7_1" pos="0.000000000 0.037626108 0.017087381" size="0.000586 0.000586 0.000586"/>
+        <site name="s7_2" pos="0.000000000 0.035612582 0.045276893" size="0.000586 0.000586 0.000586"/>
+        <site name="s7_3" pos="0.000000000 -0.037626108 0.017087381" size="0.000586 0.000586 0.000586"/>
+        <site name="s7_4" pos="0.000000000 -0.035612582 0.045276893" size="0.000586 0.000586 0.000586"/>
+        <geom name="marker_7"
+      type="cylinder"
+      pos="0 0 0.029"
+      euler="0 1.57079632679 0"
+      size="0.0019 0.028"
+      rgba="0 1 0 1"/>
+
+      <body name="link8" pos="0 0 0.048753349">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.171823" damping="0.175864"/>
+        <geom type="mesh" mesh="baselink_8" mass="0.0378"/>
+        <site name="s8_1" pos="0.000000000 0.034421673 0.015632130" size="0.000536 0.000536 0.000536"/>
+        <site name="s8_2" pos="0.000000000 0.032579629 0.041420877" size="0.000536 0.000536 0.000536"/>
+        <site name="s8_3" pos="0.000000000 -0.034421673 0.015632130" size="0.000536 0.000536 0.000536"/>
+        <site name="s8_4" pos="0.000000000 -0.032579629 0.041420877" size="0.000536 0.000536 0.000536"/>
+        <geom name="marker_8"
+      type="cylinder"
+      pos="0 0 0.026"
+      euler="0 1.57079632679 0"
+      size="0.0018 0.026"
+      rgba="0 1 0 1"/>
+
+      <body name="link9" pos="0 0 0.044601260">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.143803" damping="0.160887"/>
+        <geom type="mesh" mesh="baselink_9" mass="0.0360"/>
+        <site name="s9_1" pos="0.000000000 0.031490143 0.014300817" size="0.000491 0.000491 0.000491"/>
+        <site name="s9_2" pos="0.000000000 0.029804978 0.037893259" size="0.000491 0.000491 0.000491"/>
+        <site name="s9_3" pos="0.000000000 -0.031490143 0.014300817" size="0.000491 0.000491 0.000491"/>
+        <site name="s9_4" pos="0.000000000 -0.029804978 0.037893259" size="0.000491 0.000491 0.000491"/>
+        <geom name="marker_9"
+      type="cylinder"
+      pos="0 0 0.024"
+      euler="0 1.57079632679 0"
+      size="0.0017 0.024"
+      rgba="0 1 0 1"/>
+
+      <body name="link10" pos="0 0 0.040802784">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.120352" damping="0.147185"/>
+        <geom type="mesh" mesh="baselink_10" mass="0.0343"/>
+        <site name="s10_1" pos="0.000000000 0.028808279 0.013082885" size="0.000449 0.000449 0.000449"/>
+        <site name="s10_2" pos="0.000000000 0.027266630 0.034666071" size="0.000449 0.000449 0.000449"/>
+        <site name="s10_3" pos="0.000000000 -0.028808279 0.013082885" size="0.000449 0.000449 0.000449"/>
+        <site name="s10_4" pos="0.000000000 -0.027266630 0.034666071" size="0.000449 0.000449 0.000449"/>
+        <geom name="marker_10"
+      type="cylinder"
+      pos="0 0 0.022"
+      euler="0 1.57079632679 0"
+      size="0.0016 0.022"
+      rgba="0 1 0 1"/>
+
+      <body name="link11" pos="0 0 0.037327806">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.100725" damping="0.134650"/>
+        <geom type="mesh" mesh="baselink_11" mass="0.0325"/>
+        <site name="s11_1" pos="0.000000000 0.026354815 0.011968678" size="0.000411 0.000411 0.000411"/>
+        <site name="s11_2" pos="0.000000000 0.024944462 0.031713728" size="0.000411 0.000411 0.000411"/>
+        <site name="s11_3" pos="0.000000000 -0.026354815 0.011968678" size="0.000411 0.000411 0.000411"/>
+        <site name="s11_4" pos="0.000000000 -0.024944462 0.031713728" size="0.000411 0.000411 0.000411"/>
+        <geom name="marker_11"
+      type="cylinder"
+      pos="0 0 0.020"
+      euler="0 1.57079632679 0"
+      size="0.0015 0.020"
+      rgba="0 1 0 1"/>
+
+      <body name="link12" pos="0 0 0.034148775">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.084299" damping="0.123182"/>
+        <geom type="mesh" mesh="baselink_12" mass="0.0308"/>
+        <site name="s12_1" pos="0.000000000 0.024110302 0.010949363" size="0.000376 0.000376 0.000376"/>
+        <site name="s12_2" pos="0.000000000 0.022820062 0.029012821" size="0.000376 0.000376 0.000376"/>
+        <site name="s12_3" pos="0.000000000 -0.024110302 0.010949363" size="0.000376 0.000376 0.000376"/>
+        <site name="s12_4" pos="0.000000000 -0.022820062 0.029012821" size="0.000376 0.000376 0.000376"/>
+        <geom name="marker_12"
+      type="cylinder"
+      pos="0 0 0.018"
+      euler="0 1.57079632679 0"
+      size="0.0014 0.018"
+      rgba="0 1 0 1"/>
+
+      <body name="link13" pos="0 0 0.031240488">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.070552" damping="0.112691"/>
+        <geom type="mesh" mesh="baselink_13" mass="0.0290"/>
+        <site name="s13_1" pos="0.000000000 0.022056943 0.010016858" size="0.000344 0.000344 0.000344"/>
+        <site name="s13_2" pos="0.000000000 0.020876586 0.026541938" size="0.000344 0.000344 0.000344"/>
+        <site name="s13_3" pos="0.000000000 -0.022056943 0.010016858" size="0.000344 0.000344 0.000344"/>
+        <site name="s13_4" pos="0.000000000 -0.020876586 0.026541938" size="0.000344 0.000344 0.000344"/>
+        <geom name="marker_13"
+      type="cylinder"
+      pos="0 0 0.016"
+      euler="0 1.57079632679 0"
+      size="0.0013 0.016"
+      rgba="0 1 0 1"/>
+
+      <body name="link14" pos="0 0 0.028579885">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.059046" damping="0.103094"/>
+        <geom type="mesh" mesh="baselink_14" mass="0.0273"/>
+        <site name="s14_1" pos="0.000000000 0.020178459 0.009163770" size="0.000314 0.000314 0.000314"/>
+        <site name="s14_2" pos="0.000000000 0.019098627 0.024281488" size="0.000314 0.000314 0.000314"/>
+        <site name="s14_3" pos="0.000000000 -0.020178459 0.009163770" size="0.000314 0.000314 0.000314"/>
+        <site name="s14_4" pos="0.000000000 -0.019098627 0.024281488" size="0.000314 0.000314 0.000314"/>
+        <geom name="marker_14"
+      type="cylinder"
+      pos="0 0 0.014"
+      euler="0 1.57079632679 0"
+      size="0.0012 0.014"
+      rgba="0 1 0 1"/>
+
+      <body name="link15" pos="0 0 0.026145873">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.049417" damping="0.094314"/>
+        <geom type="mesh" mesh="baselink_15" mass="0.0255"/>
+        <site name="s15_1" pos="0.000000000 0.018459956 0.008383336" size="0.000288 0.000288 0.000288"/>
+        <site name="s15_2" pos="0.000000000 0.017472088 0.022213550" size="0.000288 0.000288 0.000288"/>
+        <site name="s15_3" pos="0.000000000 -0.018459956 0.008383336" size="0.000288 0.000288 0.000288"/>
+        <site name="s15_4" pos="0.000000000 -0.017472088 0.022213550" size="0.000288 0.000288 0.000288"/>
+        <geom name="marker_15"
+      type="cylinder"
+      pos="0 0 0.013"
+      euler="0 1.57079632679 0"
+      size="0.0012 0.013"
+      rgba="0 1 0 1"/>
+
+      <body name="link16" pos="0 0 0.023919154">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.041358" damping="0.086282"/>
+        <geom type="mesh" mesh="baselink_16" mass="0.0238"/>
+        <site name="s16_1" pos="0.000000000 0.016887810 0.007669367" size="0.000263 0.000263 0.000263"/>
+        <site name="s16_2" pos="0.000000000 0.015984074 0.020321729" size="0.000263 0.000263 0.000263"/>
+        <site name="s16_3" pos="0.000000000 -0.016887810 0.007669367" size="0.000263 0.000263 0.000263"/>
+        <site name="s16_4" pos="0.000000000 -0.015984074 0.020321729" size="0.000263 0.000263 0.000263"/>
+        <geom name="marker_16"
+      type="cylinder"
+      pos="0 0 0.012"
+      euler="0 1.57079632679 0"
+      size="0.0011 0.012"
+      rgba="0 1 0 1"/>
+
+      <body name="link17" pos="0 0 0.021882074">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.034614" damping="0.078933"/>
+        <geom type="mesh" mesh="baselink_17" mass="0.0220"/>
+        <site name="s17_1" pos="0.000000000 0.015449556 0.007016204" size="0.000241 0.000241 0.000241"/>
+        <site name="s17_2" pos="0.000000000 0.014622787 0.018591024" size="0.000241 0.000241 0.000241"/>
+        <site name="s17_3" pos="0.000000000 -0.015449556 0.007016204" size="0.000241 0.000241 0.000241"/>
+        <site name="s17_4" pos="0.000000000 -0.014622787 0.018591024" size="0.000241 0.000241 0.000241"/>
+        <geom name="marker_17"
+      type="cylinder"
+      pos="0 0 0.011"
+      euler="0 1.57079632679 0"
+      size="0.0011 0.011"
+      rgba="0 1 0 1"/>
+
+      <body name="link18" pos="0 0 0.020018483">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.028969" damping="0.072211"/>
+        <geom type="mesh" mesh="baselink_18" mass="0.0203"/>
+        <site name="s18_1" pos="0.000000000 0.014133791 0.006418667" size="0.000220 0.000220 0.000220"/>
+        <site name="s18_2" pos="0.000000000 0.013377434 0.017007716" size="0.000220 0.000220 0.000220"/>
+        <site name="s18_3" pos="0.000000000 -0.014133791 0.006418667" size="0.000220 0.000220 0.000220"/>
+        <site name="s18_4" pos="0.000000000 -0.013377434 0.017007716" size="0.000220 0.000220 0.000220"/>
+        <geom name="marker_18"
+      type="cylinder"
+      pos="0 0 0.010"
+      euler="0 1.57079632679 0"
+      size="0.0010 0.010"
+      rgba="0 1 0 1"/>
+
+      <body name="link19" pos="0 0 0.018313604">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.024245" damping="0.066061"/>
+        <geom type="mesh" mesh="baselink_19" mass="0.0185"/>
+        <site name="s19_1" pos="0.000000000 0.012930084 0.005872020" size="0.000201 0.000201 0.000201"/>
+        <site name="s19_2" pos="0.000000000 0.012238142 0.015559250" size="0.000201 0.000201 0.000201"/>
+        <site name="s19_3" pos="0.000000000 -0.012930084 0.005872020" size="0.000201 0.000201 0.000201"/>
+        <site name="s19_4" pos="0.000000000 -0.012238142 0.015559250" size="0.000201 0.000201 0.000201"/>
+        <geom name="marker_19"
+      type="cylinder"
+      pos="0 0 0.009"
+      euler="0 1.57079632679 0"
+      size="0.0010 0.009"
+      rgba="0 1 0 1"/>
+
+      <body name="link20" pos="0 0 0.016753922">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.020291" damping="0.060435"/>
+        <geom type="mesh" mesh="baselink_20" mass="0.0168"/>
+        <site name="s20_1" pos="0.000000000 0.011828890 0.005371928" size="0.000184 0.000184 0.000184"/>
+        <site name="s20_2" pos="0.000000000 0.011195878 0.014234143" size="0.000184 0.000184 0.000184"/>
+        <site name="s20_3" pos="0.000000000 -0.011828890 0.005371928" size="0.000184 0.000184 0.000184"/>
+        <site name="s20_4" pos="0.000000000 -0.011195878 0.014234143" size="0.000184 0.000184 0.000184"/>
+        <geom name="marker_20"
+      type="cylinder"
+      pos="0 0 0.008"
+      euler="0 1.57079632679 0"
+      size="0.0009 0.008"
+      rgba="0 1 0 1"/>
+
+      <body name="link21" pos="0 0 0.015327071">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.016982" damping="0.055288"/>
+        <geom type="mesh" mesh="baselink_21" mass="0.0150"/>
+        <site name="s21_1" pos="0.000000000 0.010821480 0.004914427" size="0.000169 0.000169 0.000169"/>
+        <site name="s21_2" pos="0.000000000 0.010242379 0.013021889" size="0.000169 0.000169 0.000169"/>
+        <site name="s21_3" pos="0.000000000 -0.010821480 0.004914427" size="0.000169 0.000169 0.000169"/>
+        <site name="s21_4" pos="0.000000000 -0.010242379 0.013021889" size="0.000169 0.000169 0.000169"/>
+        <geom name="marker_21"
+      type="cylinder"
+      pos="0 0 0.007"
+      euler="0 1.57079632679 0"
+      size="0.0009 0.007"
+      rgba="0 1 0 1"/>
+
+      <body name="link22" pos="0 0 0.014021738">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.014213" damping="0.050580"/>
+        <geom type="mesh" mesh="baselink_22" mass="0.0133"/>
+        <site name="s22_1" pos="0.000000000 0.009899867 0.004495889" size="0.000154 0.000154 0.000154"/>
+        <site name="s22_2" pos="0.000000000 0.009370085 0.011912877" size="0.000154 0.000154 0.000154"/>
+        <site name="s22_3" pos="0.000000000 -0.009899867 0.004495889" size="0.000154 0.000154 0.000154"/>
+        <site name="s22_4" pos="0.000000000 -0.009370085 0.011912877" size="0.000154 0.000154 0.000154"/>
+        <geom name="marker_22"
+      type="cylinder"
+      pos="0 0 0.006"
+      euler="0 1.57079632679 0"
+      size="0.0008 0.006"
+      rgba="0 1 0 1"/>
+
+      <body name="link23" pos="0 0 0.012827573">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.011895" damping="0.046272"/>
+        <geom type="mesh" mesh="baselink_23" mass="0.0115"/>
+        <site name="s23_1" pos="0.000000000 0.009056742 0.004112995" size="0.000141 0.000141 0.000141"/>
+        <site name="s23_2" pos="0.000000000 0.008572079 0.010898314" size="0.000141 0.000141 0.000141"/>
+        <site name="s23_3" pos="0.000000000 -0.009056742 0.004112995" size="0.000141 0.000141 0.000141"/>
+        <site name="s23_4" pos="0.000000000 -0.008572079 0.010898314" size="0.000141 0.000141 0.000141"/>
+        <geom name="marker_23"
+      type="cylinder"
+      pos="0 0 0.005"
+      euler="0 1.57079632679 0"
+      size="0.0008 0.005"
+      rgba="0 1 0 1"/>
+
+      <body name="link24" pos="0 0 0.011735110">
+        <joint type="hinge" axis="1 0 0" range="-0.523598776 0.523598776" stiffness="0.009955" damping="0.042331"/>
+        <geom type="mesh" mesh="baselink_24" mass="0.0098"/>
+        <site name="s24_1" pos="0.000000000 0.008285423 0.003762711" size="0.000129 0.000129 0.000129"/>
+        <site name="s24_2" pos="0.000000000 0.007842036 0.009970157" size="0.000129 0.000129 0.000129"/>
+        <site name="s24_3" pos="0.000000000 -0.008285423 0.003762711" size="0.000129 0.000129 0.000129"/>
+        <site name="s24_4" pos="0.000000000 -0.007842036 0.009970157" size="0.000129 0.000129 0.000129"/>
+        <geom name="marker_24"
+      type="cylinder"
+      pos="0 0 0.004"
+      euler="0 1.57079632679 0"
+      size="0.0007 0.004"
+      rgba="0 1 0 1"/>
+
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+      </body>
+    </body>
+<freejoint/>
+<camera name="track" pos="-1 0 .5" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>
+<site name="imu" pos="0 0 .02"/>
+<geom material="phong3SG" mesh="X2_lowpoly" class="visual" quat="0 0 1 1"/>
+<geom class="collision" size=".06 .027 .02" pos=".04 0 .02"/>
+<geom class="collision" size=".06 .027 .02" pos=".04 0 .06"/>
+<geom class="collision" size=".05 .027 .02" pos="-.07 0 .065"/>
+<geom class="collision" size=".023 .017 .01" pos="-.137 .008 .065" quat="1 0 0 1"/>
+<geom name="rotor1" class="rotor" pos="-.14 -.18 .05" mass=".25"/>
+<geom name="rotor2" class="rotor" pos="-.14 .18 .05" mass=".25"/>
+<geom name="rotor3" class="rotor" pos=".14 .18 .08" mass=".25"/>
+<geom name="rotor4" class="rotor" pos=".14 -.18 .08" mass=".25"/>
+<geom name="marker_25"
+      type="sphere"
+      pos="0.11 0 0.04"
+      size="0.01"
+      rgba="0 1 0 1"
+      contype="0" conaffinity="0"/>
+
+<geom name="marker_26"
+      type="sphere"
+      pos="0 0.11 0.04"
+      size="0.01"
+      rgba="0 1 0 1"
+      contype="0" conaffinity="0"/>
+
+<geom name="marker_27"
+      type="sphere"
+      pos="0 -0.11 0.04"
+      size="0.01"
+      rgba="0 1 0 1"
+      contype="0" conaffinity="0"/>
+<geom size=".16 .04 .02" pos="0 0 0.02" type="ellipsoid" mass=".325" class="visual" material="invisible"/>
+<site name="thrust1" pos="-.14 -.18 .05"/>
+<site name="thrust2" pos="-.14 .18 .05"/>
+<site name="thrust3" pos=".14 .18 .08"/>
+<site name="thrust4" pos=".14 -.18 .08"/>
+</body>
+
+<site name="goal"
+      type="sphere"
+      size="0.05"
+      rgba="1 0 0 1"
+      pos="0 0 2"/>
+
+
+</worldbody>
+<tendon>
+    <spatial name="tendon1" width="0.0007" frictionloss="0.1" rgba=".95 .3 .3 1" limited="true" range="0.344483943 2.153024644">
+      <site site="s1_1"/>
+      <site site="s1_2"/>
+      <site site="s2_1"/>
+      <site site="s2_2"/>
+      <site site="s3_1"/>
+      <site site="s3_2"/>
+      <site site="s4_1"/>
+      <site site="s4_2"/>
+      <site site="s5_1"/>
+      <site site="s5_2"/>
+      <site site="s6_1"/>
+      <site site="s6_2"/>
+      <site site="s7_1"/>
+      <site site="s7_2"/>
+      <site site="s8_1"/>
+      <site site="s8_2"/>
+      <site site="s9_1"/>
+      <site site="s9_2"/>
+      <site site="s10_1"/>
+      <site site="s10_2"/>
+      <site site="s11_1"/>
+      <site site="s11_2"/>
+      <site site="s12_1"/>
+      <site site="s12_2"/>
+      <site site="s13_1"/>
+      <site site="s13_2"/>
+      <site site="s14_1"/>
+      <site site="s14_2"/>
+      <site site="s15_1"/>
+      <site site="s15_2"/>
+      <site site="s16_1"/>
+      <site site="s16_2"/>
+      <site site="s17_1"/>
+      <site site="s17_2"/>
+      <site site="s18_1"/>
+      <site site="s18_2"/>
+      <site site="s19_1"/>
+      <site site="s19_2"/>
+      <site site="s20_1"/>
+      <site site="s20_2"/>
+      <site site="s21_1"/>
+      <site site="s21_2"/>
+      <site site="s22_1"/>
+      <site site="s22_2"/>
+      <site site="s23_1"/>
+      <site site="s23_2"/>
+      <site site="s24_1"/>
+      <site site="s24_2"/>
+    </spatial>
+    <spatial name="tendon2" width="0.0007" frictionloss="0.1" rgba=".95 .3 .3 1" limited="true" range="0.344483943 2.153024644">
+      <site site="s1_3"/>
+      <site site="s1_4"/>
+      <site site="s2_3"/>
+      <site site="s2_4"/>
+      <site site="s3_3"/>
+      <site site="s3_4"/>
+      <site site="s4_3"/>
+      <site site="s4_4"/>
+      <site site="s5_3"/>
+      <site site="s5_4"/>
+      <site site="s6_3"/>
+      <site site="s6_4"/>
+      <site site="s7_3"/>
+      <site site="s7_4"/>
+      <site site="s8_3"/>
+      <site site="s8_4"/>
+      <site site="s9_3"/>
+      <site site="s9_4"/>
+      <site site="s10_3"/>
+      <site site="s10_4"/>
+      <site site="s11_3"/>
+      <site site="s11_4"/>
+      <site site="s12_3"/>
+      <site site="s12_4"/>
+      <site site="s13_3"/>
+      <site site="s13_4"/>
+      <site site="s14_3"/>
+      <site site="s14_4"/>
+      <site site="s15_3"/>
+      <site site="s15_4"/>
+      <site site="s16_3"/>
+      <site site="s16_4"/>
+      <site site="s17_3"/>
+      <site site="s17_4"/>
+      <site site="s18_3"/>
+      <site site="s18_4"/>
+      <site site="s19_3"/>
+      <site site="s19_4"/>
+      <site site="s20_3"/>
+      <site site="s20_4"/>
+      <site site="s21_3"/>
+      <site site="s21_4"/>
+      <site site="s22_3"/>
+      <site site="s22_4"/>
+      <site site="s23_3"/>
+      <site site="s23_4"/>
+      <site site="s24_3"/>
+      <site site="s24_4"/>
+    </spatial>
+  </tendon>
+<actuator>
+
+<motor class="x2" name="thrust1" site="thrust1" gear="0 0 1 0 0 -.0201"/>
+<motor class="x2" name="thrust2" site="thrust2" gear="0 0 1 0 0 .0201"/>
+<motor class="x2" name="thrust3" site="thrust3" gear="0 0 1 0 0 -.0201"/>
+<motor class="x2" name="thrust4" site="thrust4" gear="0 0 1 0 0 .0201"/>
+    <position name="act1" tendon="tendon1" kp="15" ctrllimited="true" ctrlrange="-1 1" lengthrange="0.185632848 1.160205301"/>
+    <position name="act2" tendon="tendon2" kp="15" ctrllimited="true" ctrlrange="-1 1"  lengthrange="0.185632848 1.160205301" />
+</actuator>
+<sensor>
+<gyro name="body_gyro" site="imu"/>
+<accelerometer name="body_linacc" site="imu"/>
+<framequat name="body_quat" objtype="site" objname="imu"/>
+</sensor>
+<keyframe>
+<key name="hover" qpos="0 0 1.2 1 0 0 0" ctrl="5.0055 5.0055 5.0055 5.0055 0 0 "/>
+</keyframe>
+</mujoco>

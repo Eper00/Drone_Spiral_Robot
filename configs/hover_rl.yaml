@@ -1,0 +1,78 @@
+policy:
+  net_arch: [128, 128]
+  activation_fn: tanh
+rl_env:
+  # ----------------------------
+  # MuJoCo simulation settings
+  # ----------------------------
+  xml_file: "/home/tomi/SpiralRobot/robot_models/drone_tentacle.xml"
+  simulation_length_seconds: 3
+  time_between_steps_seconds: 0.01
+
+  cable_lengths: [0.185632848, 1.160205301]
+  actuator_limits: [[-1, 1], [-1, 1]]
+  warm_start: False
+  prev_ppo_path: "/home/tomi/SpiralRobot/results/run_20260616_145924_rl_lesson_1/models/best_model/best_model.zip"
+  # ----------------------------
+  # Reward shaping
+  # ----------------------------
+  reward_distance_scale: 4
+  seed: 0
+
+  # ----------------------------
+  # Environment objects
+  # ----------------------------
+
+  workspace_center: [0., 1]
+  workspace_inner_radius: 0.4
+  workspace_outer_radius: 0.6
+  # ----------------------------
+  # Observation settings
+  # ----------------------------
+  num_frames: 1
+
+  # Optional
+  marker_number: 27
+
+# =====================================================
+
+rl_training_params:
+  # Environment setup
+  num_envs: 4
+
+  # Training duration
+  total_timesteps: 5000000
+
+  # Evaluation
+  eval_freq: 10000
+  n_eval_episodes: 32
+  render_mode: null
+
+  # Checkpointing
+  save_freq: 50000
+  log_dir_base: "results"
+
+  # PPO hyperparameters
+  # for lesson_1 and lesson_2 it is 0,0002
+  learning_rate: 0.0008 
+  n_steps: 512
+  batch_size: 1024
+  n_epochs: 5
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.01
+  target_kl: 0.12
+
+
+
+
+# =====================================================
+
+rl_evaluation:
+  num_episodes: 10
+  render_delay: 0.03
+  deterministic_actions: true
+  grid_size: 20
+  space_limit: 0.2
+

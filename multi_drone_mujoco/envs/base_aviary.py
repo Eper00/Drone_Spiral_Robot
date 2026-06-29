@@ -1041,6 +1041,11 @@ class BaseAviary(gym.Env):
         yaw = np.arctan2(siny_cosp, cosy_cosp)
         return np.array([roll, pitch, yaw])
 
+
+    def _getDroneTendonLengths(self,nth_drone):
+        return self.tendon_lengths[nth_drone,:]
+
+
     def _getDroneStateVector(self, nth_drone):
         """Get the 20-dim state vector for a drone.
 
@@ -1238,10 +1243,10 @@ class BaseAviary(gym.Env):
                 "rgb": spaces.Box(low=0, high=255, shape=(self.NUM_DRONES, 48, 64, 4), dtype=np.uint8),
             })
         elif self.OBS_TYPE == ObservationType.KIN_WITH_HOOK:
-             return spaces.Dict({
-                "kin": spaces.Box(low=-np.inf, high=np.inf, shape=(12 * self.NUM_DRONES,), dtype=np.float32),
-                "tendon_length": spaces.Box(low=-1, high=1, shape=(2 * self.NUM_DRONES), dtype=np.float32),
-            })
+            return spaces.Dict({
+                "position": spaces.Box(low=-np.inf, high=np.inf, shape=(12 * self.NUM_DRONES,), dtype=np.float32),
+                "tendon_length": spaces.Box(low=-1, high=1, shape=(2 * self.NUM_DRONES,), dtype=np.float32),
+                })
         raise ValueError(f"Unknown obs type: {self.OBS_TYPE}")
 
     ############################################################################
@@ -1261,8 +1266,9 @@ class BaseAviary(gym.Env):
             imgs = np.stack([self._getDroneImages(i)[0] for i in range(self.NUM_DRONES)])
             return {"kin": kin.astype(np.float32), "rgb": imgs}
         elif self.OBS_TYPE ==ObservationType.KIN_WITH_HOOK:
-            obs = np.hstack([self._getDroneStateVector(i) for i in range(self.NUM_DRONES)])
-            return obs.astype(np.float32)
+            position = np.hstack([self._getDroneStateVector(i) for i in range(self.NUM_DRONES)])
+            tendon_lengths=np.hstack([self._getDroneTendonLengths(i) for i in range(self.NUM_DRONES)])
+            return {"position": position.astype(np.float32), "tendon_length": tendon_lengths}
         return np.array([])
 
     def _computeReward(self):

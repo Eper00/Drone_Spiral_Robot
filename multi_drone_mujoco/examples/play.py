@@ -18,14 +18,14 @@ def play(model_path: str, env_type: str = "hover", episodes: int = 3):
 
     from multi_drone_mujoco.envs.hover_aviary import HoverAviary
     from multi_drone_mujoco.envs.multi_hover_aviary import MultiHoverAviary
-    from multi_drone_mujoco.envs.adaptive_hook_hover import TentacleAviary
+    from multi_drone_mujoco.envs.adaptive_hook_hover import AdaptiveHookHover
     print(f"Loading model from: {model_path}")
     model = PPO.load(model_path)
 
     if env_type == "multi":
         env = MultiHoverAviary(num_drones=2, ctrl_freq=48, sim_freq=240, render_mode="rgb_array")
     else:
-        env = TentacleAviary(ctrl_freq=48, sim_freq=240, render_mode="human")
+        env = AdaptiveHookHover(ctrl_freq=48, sim_freq=240, render_mode="human")
 
     for ep in range(episodes):
         obs, info = env.reset()

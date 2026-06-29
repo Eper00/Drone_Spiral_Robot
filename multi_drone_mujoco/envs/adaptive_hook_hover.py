@@ -11,7 +11,7 @@ from multi_drone_mujoco.utils.enums import DroneModel, Physics, ActionType, Obse
 import mujoco
 
 
-class TentacleAviary(BaseAviary):
+class AdaptiveHookHover(BaseAviary):
     """Single drone hover task — matches gym-pybullet-drones HoverAviary."""
 
     def __init__(
@@ -51,25 +51,30 @@ class TentacleAviary(BaseAviary):
 
 
     def _computeObs(self):
-        """12-dim observation."""
         state = self._getDroneStateVector(0)
-        # pos(3), rpy(3), vel(3), ang_vel(3)
-        obs = np.hstack([state[0:3], state[7:10], state[10:13], state[13:16],state[-2:]])
-        return obs.astype(np.float32)
 
+        # position = pos(3), rpy(3), vel(3), ang_vel(3)
+        position = np.hstack([
+            state[0:3],     # pos
+            state[7:10],    # rpy
+            state[10:13],   # vel
+            state[13:16],   # ang_vel
+        ]).astype(np.float32)
 
-    def _actionSpace(self):
-       
-        return spaces.Box(low=-np.ones(6, dtype=np.float32), high=np.ones(6, dtype=np.float32))
+        # tendon_length = state[-2:]
+        tendon_length = state[-2:].astype(np.float32)
 
-    def _observationSpace(self):
-       
-        return spaces.Box(
-            low=-np.inf * np.ones(14, dtype=np.float32),
-            high=np.inf * np.ones(14, dtype=np.float32),
-        )
-    
+        return {
+            "position": position,
+            "tendon_length": tendon_length,
+        }
 
+    def step(self, action):
+        action = action.copy()
+        action[4:] = 0
+
+        obs, reward, terminated, truncated, info = super().step(action)
+        return obs, reward, terminated, truncated, info
     def _computeReward(self):
         """Dense reward: penalize distance to target height and attitude."""
         state = self._getDroneStateVector(0)

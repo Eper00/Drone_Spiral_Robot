@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 
 
-def train_single(total_timesteps: int = 100_000, output_dir: str = "results/rl_hover"):
+def train_single(total_timesteps: int = 100_000, output_dir: str = "results/rl_adpative_hook_hover"):
     """Train single-drone hover with PPO."""
     try:
         from stable_baselines3 import PPO
@@ -23,7 +23,7 @@ def train_single(total_timesteps: int = 100_000, output_dir: str = "results/rl_h
         return
 
     from multi_drone_mujoco.envs.hover_aviary import HoverAviary
-    from multi_drone_mujoco.envs.adaptive_hook_hover import TentacleAviary 
+    from multi_drone_mujoco.envs.adaptive_hook_hover import AdaptiveHookHover 
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -34,11 +34,11 @@ def train_single(total_timesteps: int = 100_000, output_dir: str = "results/rl_h
 
     # Create vectorized environment
     env = make_vec_env(
-        lambda: TentacleAviary(ctrl_freq=48, sim_freq=240),
+        lambda: AdaptiveHookHover(ctrl_freq=48, sim_freq=240),
         n_envs=4,
     )
 
-    eval_env = TentacleAviary(ctrl_freq=48, sim_freq=240)
+    eval_env = AdaptiveHookHover(ctrl_freq=48, sim_freq=240)
 
     eval_callback = EvalCallback(
         eval_env,
@@ -49,7 +49,7 @@ def train_single(total_timesteps: int = 100_000, output_dir: str = "results/rl_h
     )
 
     model = PPO(
-        "MlpPolicy",
+        "MultiInputPolicy",
         env,
         verbose=1,
         tensorboard_log=os.path.join(output_dir, "tb"),

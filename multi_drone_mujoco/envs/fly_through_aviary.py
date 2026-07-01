@@ -33,10 +33,9 @@ class FlyThroughAviary(BaseAviary):
         if waypoints is None:
             self.WAYPOINTS = np.array([
                 [0.0, 0.0, 1.0],
-                [1.0, 0.0, 1.0],
-                [1.0, 1.0, 1.5],
-                [0.0, 1.0, 1.0],
-                [0.0, 0.0, 0.5],
+                [1.0, 0.0, 1.5],
+                [2.0, 0.0, 1.0],
+                
             ])
         else:
             self.WAYPOINTS = np.array(waypoints)
@@ -93,7 +92,7 @@ class FlyThroughAviary(BaseAviary):
             ]))
         return np.concatenate(obs_list).astype(np.float32)
 
-    def _computeReward(self):
+    def _computeReward(self , action):
         total = 0.0
         for i in range(self.NUM_DRONES):
             wp_idx = min(self.current_waypoint_idx[i], len(self.WAYPOINTS) - 1)

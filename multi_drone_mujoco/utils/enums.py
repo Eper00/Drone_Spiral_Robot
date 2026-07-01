@@ -8,7 +8,8 @@ class DroneModel(Enum):
     CF2X = "cf2x"       # Crazyflie 2.x in X configuration
     CF2P = "cf2p"       # Crazyflie 2.x in + configuration
     RACE = "race"       # Racing drone (larger, more powerful)
-    BB_HOOK ="Bumble Bee with a hook"
+    BB_HOOK = "Bumblebee"    # Based on AIMoitonLab SZTAKI
+
 
 class Physics(Enum):
     """Physics implementations available."""
@@ -27,16 +28,14 @@ class ActionType(Enum):
     ONE_D_RPM = "one_d_rpm"  # 1D thrust (same RPM to all motors)
     PID = "pid"          # Target position [x, y, z, yaw] -> internal PID
     ATTITUDE = "attitude"  # Thrust + roll + pitch + yaw_rate
-    HOOK = "rpm and a hookpostion"
-
+    HOOK ="adaptive_hook_bumblebee"
 
 class ObservationType(Enum):
     """Observation types for the environment."""
     KIN = "kin"          # Kinematics only (pos, quat, rpy, vel, angvel)
     RGB = "rgb"          # RGB camera image
     KIN_RGB = "kin_rgb"  # Both kinematics and RGB
-    KIN_WITH_HOOK ="kin with adatpive hook"
-
+    KIN_WITH_HOOK = "adaptive_hook_bumblebee"
 
 class ImageType(Enum):
     """Image types for rendering."""

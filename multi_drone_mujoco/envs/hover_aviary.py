@@ -31,7 +31,7 @@ class HoverAviary(BaseAviary):
         self.TARGET_HEIGHT = target_height
         self.EPISODE_LEN_SEC = 10
         if initial_xyzs is None:
-            initial_xyzs = np.array([[0.0, 0.0, 0.4]])
+            initial_xyzs = np.array([[0.0, 0.0, 0.1]])
 
         super().__init__(
             drone_model=drone_model,
@@ -72,7 +72,7 @@ class HoverAviary(BaseAviary):
         obs = np.hstack([state[0:3], state[7:10], state[10:13], state[13:16]])
         return obs.astype(np.float32)
 
-    def _computeReward(self):
+    def _computeReward(self,action):
         """Dense reward: penalize distance to target height and attitude."""
         state = self._getDroneStateVector(0)
         pos = state[0:3]

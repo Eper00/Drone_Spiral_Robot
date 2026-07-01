@@ -757,14 +757,14 @@ class BaseAviary(gym.Env):
             Action array, format depends on self.ACT_TYPE.
         """
         # Preprocess action to RPMs
+        rpm_actions=action[:4]
+        clipped_action = np.reshape(self._preprocessAction(rpm_actions), (self.NUM_DRONES, 4))
         if self.DRONE_MODEL==DroneModel.BB_HOOK:
-            clipped_action = np.reshape(self._preprocessAction(action), (self.NUM_DRONES, 6))
-            rpm = np.expand_dims(clipped_action.squeeze()[0:4], axis=0)
-            tendon_action=clipped_action.squeeze()[4:]
+           
+            tendon_action=action[4:]
      
-        else:
-            clipped_action = np.reshape(self._preprocessAction(action), (self.NUM_DRONES, 4))
-            rpm=clipped_action
+        
+        rpm=clipped_action
         # Simulation sub-steps
         for _ in range(self.SIM_STEPS_PER_CTRL):
             # Update kinematics between sub-steps for physics effects
@@ -822,7 +822,7 @@ class BaseAviary(gym.Env):
 
         # Compute returns
         obs = self._computeObs()
-        reward = self._computeReward()
+        reward = self._computeReward(action)
         terminated = self._computeTerminated()
         truncated = self._computeTruncated()
         info = self._computeInfo()
@@ -1243,10 +1243,12 @@ class BaseAviary(gym.Env):
                 "rgb": spaces.Box(low=0, high=255, shape=(self.NUM_DRONES, 48, 64, 4), dtype=np.uint8),
             })
         elif self.OBS_TYPE == ObservationType.KIN_WITH_HOOK:
-            return spaces.Dict({
-                "position": spaces.Box(low=-np.inf, high=np.inf, shape=(12 * self.NUM_DRONES,), dtype=np.float32),
-                "tendon_length": spaces.Box(low=-1, high=1, shape=(2 * self.NUM_DRONES,), dtype=np.float32),
-                })
+            obs_lower_pos = np.full(20 * self.NUM_DRONES, -np.inf)
+            obs_upper_pos = np.full(20 * self.NUM_DRONES, np.inf)
+            obs_lower_tendon_lengths = np.full(2 * self.NUM_DRONES, -1)
+            obs_upper_tendon_lengths = np.full(2 * self.NUM_DRONES, 1)
+            return spaces.Box(low=np.hstack([obs_lower_pos.astype(np.float32),obs_lower_tendon_lengths.astype(np.float32)]),
+                               high=np.hstack([obs_upper_pos.astype(np.float32),obs_upper_tendon_lengths.astype(np.float32)]))
         raise ValueError(f"Unknown obs type: {self.OBS_TYPE}")
 
     ############################################################################
@@ -1268,10 +1270,11 @@ class BaseAviary(gym.Env):
         elif self.OBS_TYPE ==ObservationType.KIN_WITH_HOOK:
             position = np.hstack([self._getDroneStateVector(i) for i in range(self.NUM_DRONES)])
             tendon_lengths=np.hstack([self._getDroneTendonLengths(i) for i in range(self.NUM_DRONES)])
-            return {"position": position.astype(np.float32), "tendon_length": tendon_lengths}
+            obs=np.hstack([position,tendon_lengths])
+            return obs.astype(np.float32)
         return np.array([])
 
-    def _computeReward(self):
+    def _computeReward(self,action=None):
         """Compute reward. Override in subclass."""
         return 0.0
 

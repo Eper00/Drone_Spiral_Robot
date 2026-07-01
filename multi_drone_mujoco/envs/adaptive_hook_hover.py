@@ -26,12 +26,13 @@ class AdaptiveHookHover(BaseAviary):
         target_height: float = 1.0,
         initial_xyzs=None,
         render_mode=None,
+        tendon_active: bool = False,
     ):
         self.TARGET_HEIGHT = target_height
         self.EPISODE_LEN_SEC = 10
         if initial_xyzs is None:
             initial_xyzs = np.array([[0.0, 0.0, 0.4]])
-
+        self.tendon_active = tendon_active
         super().__init__(
             drone_model=drone_model,
             num_drones=1,
@@ -47,35 +48,37 @@ class AdaptiveHookHover(BaseAviary):
             render_mode=render_mode,
         )
         
-
-
-
-    def _computeObs(self):
-        state = self._getDroneStateVector(0)
-
-        # position = pos(3), rpy(3), vel(3), ang_vel(3)
-        position = np.hstack([
-            state[0:3],     # pos
-            state[7:10],    # rpy
-            state[10:13],   # vel
-            state[13:16],   # ang_vel
-        ]).astype(np.float32)
-
-        # tendon_length = state[-2:]
-        tendon_length = state[-2:].astype(np.float32)
-
-        return {
-            "position": position,
-            "tendon_length": tendon_length,
-        }
-
     def step(self, action):
-        action = action.copy()
+        # Because it is a simple hover we dont neead to use the tendon action, so we set it to 0
         action[4:] = 0
+        obs, rewards, terminateds, truncateds, infos = super().step(action)
+        return obs, rewards, terminateds, truncateds, infos
+    
+    def _actionSpace(self):
+        """Normalized [-1, 1] → mapped to RPM internally."""
+        return spaces.Box(low=-np.ones(6, dtype=np.float32), high=np.ones(6, dtype=np.float32))
 
-        obs, reward, terminated, truncated, info = super().step(action)
-        return obs, reward, terminated, truncated, info
-    def _computeReward(self):
+
+    def _observationSpace(self): 
+        obs_lower_pos = np.full(12, -np.inf)
+        obs_upper_pos = np.full(12 , np.inf)
+        obs_lower_tendon_lengths = np.full(2, -1)
+        obs_upper_tendon_lengths = np.full(2, 1)
+        return spaces.Box(low=np.hstack([obs_lower_pos.astype(np.float32),obs_lower_tendon_lengths.astype(np.float32)]),
+                               high=np.hstack([obs_upper_pos.astype(np.float32),obs_upper_tendon_lengths.astype(np.float32)]))
+    def _preprocessAction(self, action):
+        """Convert normalized action to RPMs."""
+        action = np.clip(np.array(action).flatten(), -1, 1)
+        rpms = self._normalizedActionToRPM(action).reshape(1, 4)
+        return rpms
+    def _computeObs(self):
+        """12-dim observation."""
+        state = self._getDroneStateVector(0)
+        # pos(3), rpy(3), vel(3), ang_vel(3)
+        obs = np.hstack([state[0:3], state[7:10], state[10:13], state[13:16] , state[-2:]])
+        return obs.astype(np.float32)
+
+    def _computeReward(self,action):
         """Dense reward: penalize distance to target height and attitude."""
         state = self._getDroneStateVector(0)
         pos = state[0:3]
@@ -88,7 +91,7 @@ class AdaptiveHookHover(BaseAviary):
 
         reward = -height_error - 0.1 * xy_error
         reward -= 0.05 * np.linalg.norm(vel)
-        reward -= 0.05 * (abs(rpy[0]) + abs(rpy[1])+abs(rpy[2]))
+        reward -= 0.05 * (abs(rpy[0]) + abs(rpy[1]) + 10 * abs(rpy[2]))
 
         # Bonus for being close
         if height_error < 0.05 and xy_error < 0.05:
@@ -98,7 +101,6 @@ class AdaptiveHookHover(BaseAviary):
             reward -= 100.0
 
         return float(reward)
-
     def _computeTerminated(self):
         """Terminate if drone crashes or flips."""
         state = self._getDroneStateVector(0)
